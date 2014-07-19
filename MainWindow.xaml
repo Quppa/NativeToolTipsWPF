@@ -1,0 +1,64 @@
+﻿<Window x:Class="NativeToolTip.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:NativeToolTip"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <Style TargetType="{x:Type ToolTip}">
+            <Setter Property="Background" Value="#FFFFFFFF" />
+            <Setter Property="Padding" Value="5,1,6,2" />
+            <Setter Property="HasDropShadow" Value="{DynamicResource {x:Static SystemParameters.DropShadowKey}}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToolTip}" xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+                        <themes:SystemDropShadowChrome Name="Shdw" themes:SystemDropShadowChrome.Color="Transparent" themes:SystemDropShadowChrome.CornerRadius="0" SnapsToDevicePixels="True">
+                            <Border Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" SnapsToDevicePixels="True">
+                                <ContentPresenter TextOptions.TextFormattingMode="Display" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}" />
+                            </Border>
+                        </themes:SystemDropShadowChrome>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasDropShadow" Value="True">
+                                <Setter TargetName="Shdw" Property="Margin" Value="0,0,5,5" />
+                                <Setter TargetName="Shdw" Property="themes:SystemDropShadowChrome.Color" Value="#71000000" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Button Click="Button_Click" HorizontalAlignment="Center" MinWidth="75" Height="23">
+            <Button.ToolTip>
+                <ToolTip x:Name="tttest">
+                    Test
+                </ToolTip>
+            </Button.ToolTip>
+            Click me
+        </Button>
+
+        <Button Margin="300,0,0,0" HorizontalAlignment="Center" MinWidth="75" Height="23" Click="Button_Click" local:NativeToolTipControl.ToolTip="{Binding UpdatingString}" ToolTipService.InitialShowDelay="0" ToolTipService.ShowDuration="9999999">
+            Click me
+        </Button>
+
+        <Button Margin="0,150,0,0" HorizontalAlignment="Center" MinWidth="75" Height="23" Click="Button_Click">
+            <Button.ToolTip>
+                <local:NativeToolTipControl>
+                    Exit
+                </local:NativeToolTipControl>
+            </Button.ToolTip>
+            Click me
+        </Button>
+
+        <Button Margin="0,0,300,0" HorizontalAlignment="Center" MinWidth="75" Height="23" Click="Button_Click">
+            <Button.ToolTip>
+                <local:NativeToolTipControl Content="{Binding UpdatingString}" />
+            </Button.ToolTip>
+            Click me
+        </Button>
+
+        <Button Margin="0,0,0,150" HorizontalAlignment="Center" MinWidth="75" Height="23" Click="Button_Click" ToolTip="Exit">
+            Click me
+        </Button>
+    </Grid>
+</Window>
